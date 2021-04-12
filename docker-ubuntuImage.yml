@@ -1,0 +1,10 @@
+- hosts: all
+  tasks:
+
+        - docker_image:
+                name: "ubuntu:14.04"
+                state: build
+                load_path: "/yum/docker_imagesss/ubuntu-14.04.tar"
+
+
+

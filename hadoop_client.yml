@@ -1,0 +1,26 @@
+- hosts: all
+  vars_prompt:
+        - name: master_IP
+          private: no
+        - name: jobtracker_IP
+          private: no
+  tasks:
+        - name: CORE file editing
+          blockinfile:
+                path: /etc/hadoop/core-site.xml
+                insertafter: "<configuration>"
+                block: |
+                        <property>
+                        <name>fs.default.name</name>
+                        <value>hdfs://{{ master_IP }}:9001</value>
+                        </property>
+
+        - name: MAPRED file editing
+          blockinfile:
+                path: /etc/hadoop/mapred-site.xml
+                insertafter: "<configuration>"
+                block: |
+                        <property>
+                        <name>mapred.job.tracker</name>
+                        <value>{{ jobtracker_IP  }}:9002</value>
+                        </property>

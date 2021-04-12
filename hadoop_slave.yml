@@ -1,0 +1,30 @@
+- hosts: slave
+  vars_prompt:
+        - name: master_IP
+          private: no
+  tasks:
+        - name: HDFS file editing
+          blockinfile:
+                path: /etc/hadoop/hdfs-site.xml
+                insertafter: "<configuration>"
+                block: |
+                        <property>
+                        <name>dfs.data.dir</name>
+                        <value>/data</value>
+                        </property>
+        - name: CORE file editing
+          blockinfile:
+                path: /etc/hadoop/core-site.xml
+                insertafter: "<configuration>"
+                block: |
+                        <property>
+                        <name>fs.default.name</name>
+                        <value>hdfs://{{ master_IP }}:9001</value>
+                        </property>
+
+        - name: creating directory
+          file:
+                path: /data
+                state: directory
+
+        - command: hadoop-daemon.sh start datanode

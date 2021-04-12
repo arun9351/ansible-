@@ -1,0 +1,21 @@
+- hosts: all
+  tasks:
+        - name: sending packages
+          copy:
+                dest: "/tmp"
+                src: "/root/Desktop/codes/hadoop"
+        - lineinfile:
+                dest: /root/.bashrc
+                regexp: "{{ item.regexp }}"
+                line: "{{  item.line }}"
+          with_items:
+                - { regexp: "export JAVA_HOME", line: 'export JAVA_HOME=/usr/java/jdk1.8.0_171-amd64/'}
+                - { regexp: "export PATH", line: 'export PATH=/usr/java/jdk1.8.0_171-amd64/bin/:$PATH'}
+                - { regexp: "iptables -F", line: 'iptables -F'}
+        
+        - command: "{{ item }}"
+          with_items:
+                - rpm -ivh /tmp/hadoop/jdk-8u171-linux-x64.rpm
+                - rpm -ivh /tmp/hadoop/hadoop-1.2.1-1.x86_64.rpm --force
+               
+ 

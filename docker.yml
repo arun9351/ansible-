@@ -1,0 +1,36 @@
+- hosts: all
+  tasks:
+
+        - yum_repository:
+
+                name: "yum"
+                baseurl: "file:///yum/docker_imagesss/docker"
+                description: "yum"
+                gpgcheck: "no"
+
+        - yum_repository:
+
+                name: "epel"
+                baseurl: "http://dl.fedoraproject.org/pub/epel/7/x86_64/"
+                description: "epel"
+                gpgcheck: "no"
+
+        - copy:
+                dest: "/yum"
+                src: "/root/Desktop/ansible/docker_imagesss"
+
+        - package:
+                name: "python2-pip"
+                state: present
+        - pip: 
+                name: "docker-py"
+                executable: pip2.7
+                state: present
+
+        - package: 
+                name: "docker-ce"
+                state: present
+        - systemd:
+                name: "docker"
+                state: started
+                enabled: yes

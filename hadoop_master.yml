@@ -1,0 +1,37 @@
+- hosts: localhost
+  vars_prompt:
+        - name: master_IP
+          private: no
+          
+  tasks:
+        - name: HDFS file editing
+          blockinfile:
+                path: /etc/hadoop/hdfs-site.xml
+                insertafter: "<configuration>"
+                block: |
+                        <property>
+                        <name>dfs.name.dir</name>
+                        <value>/nn</value>
+                        </property>
+
+        - name: CORE file editing
+          blockinfile:
+                path: /etc/hadoop/core-site.xml
+                insertafter: "<configuration>"
+                block: |
+                        <property>
+                        <name>fs.default.name</name>
+                        <value>hdfs://{{ master_IP }}:9001</value>
+                        </property>
+
+        - name: creating directory
+          file:
+                path: /nn
+                state: directory
+
+        - shell: "echo Y | hadoop namenode -format "
+          args:
+                chdir: /etc/hadoop
+
+        - command: hadoop-daemon.sh start namenode
+

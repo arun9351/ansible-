@@ -1,0 +1,13 @@
+- hosts: all
+  tasks:
+        - package:
+                name: "httpd"
+                state: present
+
+        - copy: 
+                src: "/root/Desktop/ansible/web_images/"
+                dest: "/var/www/html/"
+
+        - service:
+                name: "httpd"
+                state: started

@@ -1,0 +1,16 @@
+- hosts: all
+  vars_prompt:
+        - name: jobtracker_IP
+          private: no 
+  tasks:
+        - name: MAPRED file editing
+          blockinfile:
+                path: /etc/hadoop/mapred-site.xml
+                insertafter: "<configuration>"
+                block: |
+                        <property>
+                        <name>mapred.job.tracker</name>
+                        <value>{{ jobtracker_IP }}:9002</value>
+                        </property>
+
+        - command: hadoop-daemon.sh start tasktracker

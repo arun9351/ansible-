@@ -1,0 +1,12 @@
+- hosts: all
+  tasks:
+
+        - copy:
+                dest: "/root/Desktop/yum" 
+                src: "/root/Desktop/ansible/docker_imagesss"
+
+        - yum_repository:
+                name: "yum"
+                baseurl: "file:///root/Desktop/yum"
+                description: "myrepo"
+                gpgcheck: "no"

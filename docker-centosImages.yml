@@ -1,0 +1,6 @@
+- hosts: all
+  tasks: 
+        - docker_image:
+                name: "centos:latest"
+                state: build
+                load_path: "/yum/docker_imagesss/centos-latest.tar"
